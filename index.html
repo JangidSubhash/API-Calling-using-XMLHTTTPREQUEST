@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Calling</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+
+    <div class="text-center loader">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">albumId</th>
+            <th scope="col">id</th>
+            <th scope="col">title</th>
+            <th scope="col">url</th>
+            <th scope="col">thumbnailUrl</th>
+          </tr>
+        </thead>
+        <tbody>          
+        </tbody>
+      </table>
+
+
+    <script>
+        //https://jsonplaceholder.typicode.com/photos
+
+        // create xhr from the httpxmlrequest
+
+        //define the calss
+        class Myclass{
+            //1. property
+            //2. constructor
+            //3. Method
+
+            getName(mname){
+                console.log("I am a fullstack developer"+mname);
+            }
+        }
+
+        // define the object for calling the function in the class
+
+        // objectName = new ClassName 
+        let obj = new Myclass();
+        // access the method using the . dot operator or member selection operator
+
+        // access method using predefine class for API
+
+        obj.getName('Subhash');
+
+        let xhr = new XMLHttpRequest();
+
+        xhr.open("GET", "https://jsonplaceholder.typicode.com/photos"); 
+        xhr.send();       
+        xhr.onload = function(response){
+            console.log(response);
+        }
+
+
+        // creating a function for get phohto using api.
+        //define a function
+        function getMyPhoto(url,method,mycallfun){
+
+            let xhrr = new XMLHttpRequest();
+            xhrr.open(method,url);
+            xhrr.send();
+            xhrr.onload = function(){
+                mycallfun(xhrr.responseText);
+            }            
+        }
+
+        getMyPhoto('https://jsonplaceholder.typicode.com/photos','GET', function(response){
+
+            document.querySelector('.loader').remove();
+
+            console.log(response);
+            response = JSON.parse(response);
+            console.log(response);
+            var tbody = document.querySelector('.table > tbody');
+            response.forEach((currentElement, index, arr) => {
+                console.log(currentElement);
+                var tr = document.createElement('tr');
+
+                var td1 = document.createElement('td');
+                    td1.innerHTML = currentElement.albumId;
+                var td2 = document.createElement('td');
+                    td2.innerHTML = currentElement.id;
+                var td3 = document.createElement('td');
+                    td3.innerHTML = currentElement.title;
+                var td4 = document.createElement('td');
+                var anchor = document.createElement('a');
+                var anchortext = document.createTextNode(currentElement.url);
+                    anchor.setAttribute('href', currentElement.url);
+                    anchor.setAttribute('target', '_blank');
+                    anchor.appendChild(anchortext);
+                    td4.appendChild(anchor);
+                var td5 = document.createElement('td');
+                var img = document.createElement('img');
+                    img.setAttribute("src",currentElement.thumbnailUrl);
+                    td5.appendChild(img);
+                
+                tr.appendChild(td1);
+                tr.appendChild(td2);
+                tr.appendChild(td3);
+                tr.appendChild(td4);
+                tr.appendChild(td5);    
+
+                tbody.appendChild(tr);
+            });
+
+        })
+
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>
